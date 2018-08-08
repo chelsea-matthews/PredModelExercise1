@@ -128,7 +128,26 @@ median(class_b_non_green$Rent)
 ```
 A higher proportion of green buildings are class A buildings (80%) than non green (63%).  The median rent for class A is 28.2 dollars per sq ft and the median rent for class B is 24 dollars per sq ft. This is therefore a variable that could have affected the higher rent found for green buildings.
 
+##Bootstrapping
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+library(mosaic)
+library(quantmod)
+library(foreach)
+setwd('/users/chelseamatthews/Documents')
+set.seed(11)
+mystocks = c("SPY","TLT","LQD","EEM","VNQ")
+myprices = getSymbols(mystocks, from = "2007-01-01")
+
+for(ticker in mystocks) {
+	expr = paste0(ticker, "a = adjustOHLC(", ticker, ")")
+	eval(parse(text=expr))
+}
 
 
+all_returns =cbind( ClCl(SPYa), ClCl(TLTa),ClCl(LQDa),ClCl(EEMa),ClCl(VNQa))
+head(all_returns)
+
+all_returns=as.matrix(na.omit(all_returns))
+```
 
 
