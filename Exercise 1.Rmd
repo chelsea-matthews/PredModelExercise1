@@ -1,0 +1,134 @@
+---
+title: "Exercise 1"
+author: "Marie Gleichauf, Chelsea Matthews, Hope Knopf"
+date: "8/8/2018"
+output: html_document
+---
+
+#Exercise 1
+
+##Probaility Practice
+
+###Part A
+We need P(yes|truthful clickers) 
+WE know:
+P(yes) = .65
+P(no) = .35
+P(random clickers) = 0.3
+P(truthful clikers) = 1-P(random clickers) = 1-0.3 = 0.7
+P(yes|random clicker) = P(no|random clicker) = 0.5
+
+P(Y) = P(Y|truthfull clickers) \* P(truthful clickers) + P(Y|random clickers)*P(random clickers)
+
+.65 = P(yes|truthful clickers)*0.7 + 0.5(0.3)
+P(yes|truthful clickers) = ((0.5)(0.3)-.65)/-0.7 
+P(yes|truthful clickers) = 0.7142857
+
+About 71% of the truthful clickers answered yes. 
+
+###Part B
+D = someone has disease
+H = someone does not have disease (healthy)
+P = positive test results
+N = negative test results
+
+we need P(D|P)
+we have:
+P(D) = 0.000025
+P(H) = 1-P(D) = 1-0.000025 = 0.999975
+P(P|D) = .993
+P(N|H) = 0.9999 
+P(P|H) = 1-0.9999=.0001 
+
+P(P) = P(P|D)P(D) + P(P|H)P(H)
+     =(.993\*0.000025) + (.0001*0.999975)
+P(P) = 0.0001248225
+
+Using Bayes 
+P(D|P) = (P(D)*P(P|D))/P(P)
+       = (0.000025*.993)/0.0001248225
+P(D|P) =  0.1988824
+
+So the probability that a person has the disease given that they test positive is about 20%. The low accuracy of this test could present numerous problems and lead to expensive further testing and cautionary treatments to people who don't actually have the disease. 
+
+##Exploratory Analysis: Green Buildings
+```{r message=FALSE, warning=FALSE}
+library(mosaic)
+
+green = read.csv('~/Documents/UT/Summer Classes/Intro to Predictive Modeling/Part 2/HW 1/greenbuildings.csv')
+
+attach(green)
+summary(green)
+```
+
+```{r}
+green=green[green$leasing_rate>10,] #remove low occupancy
+```
+
+```{r}
+rent_green = lm(Rent~., data = green)
+summary(rent_green)
+```
+Running a linear regression gave us an indication of which variables could affect rent prices.
+
+```{r}
+#take subset of green and not green buildings
+green_building = subset(green, green_rating==1)
+dim(green_building)
+
+non_green_building=subset(green, green_rating!=1)
+dim(non_green_building)
+```
+
+```{r}
+#amenities
+green_building_amenities = subset(green_building, amenities==1)
+median(green_building_amenities$Rent)
+nrow(green_building_amenities)/nrow(green_building)
+
+non_green_building_amenities = subset(non_green_building, amenities==1)
+median(non_green_building_amenities$Rent)
+nrow(non_green_building_amenities)/nrow(non_green_building)
+```
+The median rent is around 2.78 dollars more for green buildings with amenities as compared to non green buildings with amenities. Further, 72.8% of green buildings have amenities, whereas only 51% of non green buildings have amenities. Amenities is therefore a variable that could have affected the higher rent found for green buildings.
+
+```{r}
+#age
+green_building_age = subset(green_building, age<10)
+median(green_building_age$Rent)
+hist(green_building_age$Rent)
+
+non_green_building_age = subset(non_green_building, age<10)
+median(non_green_building_age$Rent)
+hist(non_green_building_age$Rent)
+```
+Surprisingly, the median rent for green buildings under 10 years old is only 26.75 dollars while the median rent for non green buildings under 10 years old is higher at 29 dollars. This contradicts the the excel guru's conclusions that green buildings have higher rent.
+
+```{r}
+ #class 
+class_a = subset(green, class_a==1)
+class_a_green = subset(green_building,class_a==1)
+class_a_non_green = subset(non_green_building,class_a != 1)
+
+class_b = subset(green, class_b==1)
+class_b_green = subset(green_building,class_b==1)
+class_b_non_green = subset(non_green_building,class_b !=1 )
+
+nrow(class_a_green)/nrow(green_building)
+nrow(class_a_non_green)/nrow(non_green_building)
+
+median(class_a$Rent)
+median(class_b$Rent)
+
+median(class_a_green$Rent)
+median(class_a_non_green$Rent)
+
+median(class_b_green$Rent)
+median(class_b_non_green$Rent)
+```
+A higher proportion of green buildings are class A buildings (80%) than non green (63%).  The median rent for class A is 28.2 dollars per sq ft and the median rent for class B is 24 dollars per sq ft. This is therefore a variable that could have affected the higher rent found for green buildings.
+
+
+
+
+
