@@ -49,7 +49,7 @@ P(D|P) = (P(D)*P(P|D))/P(P)
        = (0.000025*.993)/0.0001248225
 P(D|P) =  0.1988824
 
-So the probability that a person has the disease given that they test positive is about 20%. The low accuracy of this test could present numerous problems and lead to expensive further testing and cautionary treatments to people who don't actually have the disease. 
+The probability that a person has the disease given that they test positive is about 20%. The low accuracy of this test could present numerous problems and lead to expensive further testing and treatments to people who don't actually have the disease. 
 
 ##Exploratory Analysis: Green Buildings
 ```{r message=FALSE, warning=FALSE}
@@ -79,6 +79,7 @@ dim(green_building)
 non_green_building=subset(green, green_rating!=1)
 dim(non_green_building)
 ```
+There are many fewer green buildings in the data set than there are non green buildings, which could potentially skew our findings. Better recommendations could be made from a larger dataset or more balanced observations.
 
 ```{r}
 #amenities
@@ -102,7 +103,7 @@ non_green_building_age = subset(non_green_building, age<10)
 median(non_green_building_age$Rent)
 hist(non_green_building_age$Rent)
 ```
-Surprisingly, the median rent for green buildings under 10 years old is only 26.75 dollars while the median rent for non green buildings under 10 years old is higher at 29 dollars. This contradicts the the excel guru's conclusions that green buildings have higher rent.
+Surprisingly, the median rent for green buildings under 10 years old is only 26.75 dollars while the median rent for non green buildings under 10 years old is higher at 29 dollars. This contradicts the the excel guru's conclusions that green buildings tend to have higher rent and is an interesting variable to consider since in this case, the results of examining the difference between green and non green buildings while holding this variable constant seems counterintuitive. You would anticipate that newer green buildngs would mean higher median rents than newer non green buildings, but for those under 10 years old the opposite was the case. The histograms of the rent values also provide evidence that a greater number of non green buildings under 10 years old have higher rent values overall.
 
 ```{r}
  #class 
@@ -126,7 +127,11 @@ median(class_a_non_green$Rent)
 median(class_b_green$Rent)
 median(class_b_non_green$Rent)
 ```
-A higher proportion of green buildings are class A buildings (80%) than non green (63%).  The median rent for class A is 28.2 dollars per sq ft and the median rent for class B is 24 dollars per sq ft. This is therefore a variable that could have affected the higher rent found for green buildings.
+A higher proportion of green buildings are class A buildings (80%) than non green (63%). This makes sense because green buildings are likely to be built with the best materials available since they're already made to go above and beyond basic requirements of a typical building. The median rent for class A is 28.2 dollars per sq ft and the median rent for class B is 24 dollars per sq ft. This is therefore a variable that could have affected the higher rent found by the excel guru for green buildings. For class B median rents, the non green buildings were slightly higher, which could potentially be due to a greater number and variety of non green buildings built with lower grade materials.
+
+
+###Final Conclusions
+From our analysis, we cannot conclusively say that green buildings will generate higher rent values because various variables such as amenities, age, and class of materials also affect the rent values in numeruous and different ways. We therefore believe that although the excel guru performed some valid analysis, other potentially interacting variables make it difficult to accurately predict the projected revenue from rent and make it difficult to know if greater rent prices are due to a building being green or not or due to other characteristic variables. Further analysis into potentially interacting variables, both those explored here and others such as the attributes of other buildings in the cluster Austin resides in, would need to be considered before recommending with any certainty that building the green building would be the best and most profitable option.
 
 ##Bootstrapping
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
