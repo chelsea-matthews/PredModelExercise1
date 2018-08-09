@@ -201,7 +201,7 @@ quantile(sim1[,n_days], 0.05) - initial_wealth
 mean(sim1[,n_days]) 
 total_wealth
 ```
-Using the even split portfolio, the most that you will lose is $6,240.31 at a 95% confidence level. In this simulation, the total wealth at the end of the 20 days was $106,120.20 . 
+Using the even split portfolio, the most that you will lose is \$6,240.31 at a 95% confidence level. In this simulation, the total wealth at the end of the 20 days was $106,120.20 . 
 
 
 #Safer Portfolio 
@@ -240,12 +240,12 @@ mean(sim_safe[,n_days])
 quantile(sim_safe[,n_days], 0.05) - initial_wealth
 total_wealth
 ```
-Using the safer portfolio, the most that you will lose is $2,849.68 at a 95% confidence level. In this simulation, the total wealth at the end of the 20 days was $99,634.77 . 
+Using the safer portfolio, the most that you will lose is \$2,849.68 at a 95% confidence level. In this simulation, the total wealth at the end of the 20 days was $99,634.77 . 
 
 
 #Agressive Portfolio
 
-For the riskier portfolio, only EEM and VNQ were used becuase they were the two riskiest investments.Heavier weight (.6) was given to EEM becuase it is the riskier investment and has the highest varaition. The two instruments are postively correlated. 
+For the riskier portfolio, only EEM and VNQ were used becuase they were the two riskiest investments.Heavier weight (0.6) was given to EEM becuase it is the riskier investment and has the highest varaition. The two instruments are postively correlated. 
 
 ```{r}
 #riskier portfolio 
@@ -280,7 +280,7 @@ total_wealth
 wealthtracker
 ```
 
-Using the riskier portfolio, the most that you will lose is $12,779.98 at a 95% confidence level. In this simulation, the total wealth at the end of the 20 days was $107,473.40 . 
+Using the riskier portfolio, the most that you will lose is \$12,779.98 at a 95% confidence level. In this simulation, the total wealth at the end of the 20 days was $107,473.40 . 
 
 #Comparing Portfolios 
 
