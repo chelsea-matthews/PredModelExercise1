@@ -91,7 +91,7 @@ non_green_building_amenities = subset(non_green_building, amenities==1)
 median(non_green_building_amenities$Rent)
 nrow(non_green_building_amenities)/nrow(non_green_building)
 ```
-The median rent is around 2.78 dollars more for green buildings with amenities as compared to non green buildings with amenities. Further, 72.8% of green buildings have amenities, whereas only 51% of non green buildings have amenities. Amenities is therefore a variable that could have affected the higher rent found for green buildings.
+The median rent is around \$2.78 more for green buildings with amenities as compared to non green buildings with amenities. Further, 72.8% of green buildings have amenities, whereas only 51% of non green buildings have amenities. Amenities is therefore a variable that could have affected the higher rent found for green buildings.
 
 ```{r}
 #age
@@ -103,7 +103,7 @@ non_green_building_age = subset(non_green_building, age<10)
 median(non_green_building_age$Rent)
 hist(non_green_building_age$Rent)
 ```
-Surprisingly, the median rent for green buildings under 10 years old is only 26.75 dollars while the median rent for non green buildings under 10 years old is higher at 29 dollars. This contradicts the the excel guru's conclusions that green buildings tend to have higher rent and is an interesting variable to consider since in this case, the results of examining the difference between green and non green buildings while holding this variable constant seems counterintuitive. You would anticipate that newer green buildngs would mean higher median rents than newer non green buildings, but for those under 10 years old the opposite was the case. The histograms of the rent values also provide evidence that a greater number of non green buildings under 10 years old have higher rent values overall.
+Surprisingly, the median rent for green buildings under 10 years old is only \$26.75 while the median rent for non green buildings under 10 years old is higher at $29. This contradicts the the excel guru's conclusions that green buildings tend to have higher rent and is an interesting variable to consider since in this case, the results of examining the difference between green and non green buildings while holding this variable constant seems counterintuitive. You would anticipate that newer green buildngs would mean higher median rents than newer non green buildings, but for those under 10 years old the opposite was the case. The histograms of the rent values also provide evidence that a greater number of non green buildings under 10 years old have higher rent values overall.
 
 ```{r}
  #class 
@@ -127,7 +127,7 @@ median(class_a_non_green$Rent)
 median(class_b_green$Rent)
 median(class_b_non_green$Rent)
 ```
-A higher proportion of green buildings are class A buildings (80%) than non green (63%). This makes sense because green buildings are likely to be built with the best materials available since they're already made to go above and beyond basic requirements of a typical building. The median rent for class A is 28.2 dollars per sq ft and the median rent for class B is 24 dollars per sq ft. This is therefore a variable that could have affected the higher rent found by the excel guru for green buildings. For class B median rents, the non green buildings were slightly higher, which could potentially be due to a greater number and variety of non green buildings built with lower grade materials.
+A higher proportion of green buildings are class A buildings (80%) than non green (63%). This makes sense because green buildings are likely to be built with the best materials available since they're already made to go above and beyond basic requirements of a typical building. The median rent for class A is \$28.2 per sq ft and the median rent for class B is $24 per sq ft. This is therefore a variable that could have affected the higher rent found by the excel guru for green buildings. For class B median rents, the non green buildings were slightly higher, which could potentially be due to a greater number and variety of non green buildings built with lower grade materials.
 
 
 ###Final Conclusions
@@ -138,7 +138,6 @@ From our analysis, we cannot conclusively say that green buildings will generate
 library(mosaic)
 library(quantmod)
 library(foreach)
-setwd('/users/chelseamatthews/Documents')
 set.seed(11)
 mystocks = c("SPY","TLT","LQD","EEM","VNQ")
 myprices = getSymbols(mystocks, from = "2007-01-01")
@@ -167,7 +166,7 @@ pairs(all_returns)
 ```
 SPY and TLT seem to be negatively correlated. SPY has a positive correlation with VNQ. VNQ also has a positive correlation with EEM. LQD has a positive correlation with TLT. Becuase of the negative correlation between SPY and TLT and because of their low variation, they will go in the safe portfolio. The negative correlation means that if one stock goes down, then the other is likely to go up. LQD also has low variation, so it will be the third allocation in the safe profile. EEM nad VNQ will so in the riskier portfolio because they have the most variation and are likely to move together, meaning if they go up, there is large potential profit. On the downside, there are large potential losses if they go down. 
 
-#Even Split
+###Even Split
 ```{r}
 #even split
 set.seed(11)
@@ -204,7 +203,7 @@ total_wealth
 Using the even split portfolio, the most that you will lose is \$6,240.31 at a 95% confidence level. In this simulation, the total wealth at the end of the 20 days was $106,120.20 . 
 
 
-#Safer Portfolio 
+###Safer Portfolio 
 
 For the safer portfolio, we used only LQD, TLT, and SPY since they are the safest investment tolls.They have the least variation, meaning they have a lower chance of causes big losses. Bonds are less vulnerable to stock market fluctuation, allowing their prices to be more constant over-time. The trade-off is that there is a lower change of potential large earnings. From the boxplot we can see that LQD has the lowest variation, so it will be given the biggest weight, to be safer. SPY and TLT seem to be negatively correlated, so we will give them the same weighting of 0.25, in hopes that losses in one is balances from gains in the other. 
 
@@ -243,7 +242,7 @@ total_wealth
 Using the safer portfolio, the most that you will lose is \$2,849.68 at a 95% confidence level. In this simulation, the total wealth at the end of the 20 days was $99,634.77 . 
 
 
-#Agressive Portfolio
+###Agressive Portfolio
 
 For the riskier portfolio, only EEM and VNQ were used becuase they were the two riskiest investments.Heavier weight (0.6) was given to EEM becuase it is the riskier investment and has the highest varaition. The two instruments are postively correlated. 
 
@@ -282,7 +281,7 @@ wealthtracker
 
 Using the riskier portfolio, the most that you will lose is \$12,779.98 at a 95% confidence level. In this simulation, the total wealth at the end of the 20 days was $107,473.40 . 
 
-#Comparing Portfolios 
+###Comparing Portfolios 
 
 ```{r}
 set.seed(11)
@@ -297,3 +296,68 @@ Var = c((quantile(sim1[,n_days], 0.05) - initial_wealth),
 data.frame(names,Var)
 ```
 From the output, you can see that the agressive portfolio is the riskiest, with the largest potential losses. 
+
+
+##Market Segmentation
+
+We tried k-means clustering and didn't have super clear results from which to segment markets.  We then implemented PCA and were able to get a more clear market segmentation by using our k-means clusters to color points on our PCA visualization.  
+```{r}
+#read in data
+data = read.csv('~/Documents/UT/Summer Classes/Intro to Predictive Modeling/Part 2/HW 1/social_marketing.csv', header=TRUE)
+summary(data)
+
+set.seed(11)
+
+#center and scale data 
+data = data[,2:37]
+data.scaled = scale(data, center=TRUE, scale=TRUE)
+
+#distance matrix 
+twitter_distance_matrix = dist(data.scaled, method='euclidean')
+
+# Now run hierarchical clustering
+hier_data = hclust(twitter_distance_matrix, method='average')
+
+# Plot the dendrogram
+plot(hier_data, cex=0.8)
+
+#PCA
+pc.twitter = prcomp(data.scaled, scale=TRUE)
+plot(pc.twitter)
+
+loadings = pc.twitter$rotation
+scores = pc.twitter$x
+
+#kmeans cluster for segmentation of PCA plot
+#2 clusters
+set.seed(11)
+cluster = kmeans(data.scaled, centers = 2, n=50)
+qplot(scores[,1], scores[,2], color=cluster$cluster, xlab='Component 1', ylab='Component 2')
+cluster$centers
+
+#3 clusters 
+set.seed(11)
+cluster = kmeans(data.scaled, centers = 3, n=50)
+qplot(scores[,1], scores[,2], color=cluster$cluster, xlab='Component 1', ylab='Component 2')
+cluster$centers
+
+#4 clusters
+set.seed(11)
+cluster = kmeans(data.scaled, centers = 4, n=50)
+qplot(scores[,1], scores[,2], color=cluster$cluster, xlab='Component 1', ylab='Component 2')
+cluster$centers
+
+#5 clusters
+set.seed(11)
+cluster = kmeans(data.scaled, centers = 5, n=50)
+qplot(scores[,1], scores[,2], color=cluster$cluster, xlab='Component 1', ylab='Component 2')
+cluster$centers
+
+```
+We ran clusters for multiple values of centers, and ultimately chose the 3 cluster model to be the most telling of market segments.  We drew the following conclusions from the cluster centers of this model:
+
+Cluster 1: above average instances of chatter, photo sharing, shopping, cooking, fashion, fitness, and beauty tweets
+Cluster 2: above average instances of crafts, sports, family, food, religion, parenting, and school tweets
+Cluster 3: below average in every category (not frequent tweeters)
+
+From this analysis, we have determined two significant categories of followers that NutrientH20 could target in social media promotions.  One is potentially younger females, ranging from teenagers to younger adults.  One is potentially parents, who tweet about the activities of their children and other family activities.  
