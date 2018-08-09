@@ -150,4 +150,142 @@ head(all_returns)
 all_returns=as.matrix(na.omit(all_returns))
 ```
 
+```{r message=FALSE, warning=FALSE}
+cor(all_returns)
+boxplot(all_returns,main = "Daily Return Dsitribution by Asset Classification",names =c( "SPYa","TLTa","LQDa","EEMa","VNQa"))
+summary(all_returns)
+```
+Looking at the boxplot, it is noticeable that the safest investments are US domestic equities (SPY), investment grade corporate bonds(LQD) and U.S. Treaury bonds (TLT). They have the smallest Inter-quartile ranges (IQR) according to the boxplots. On the other hand, emerging market equities (EEM) and real estate (VNQ) are the riskier investments. They have wider IQRs. This is to be expected becuase emerging markets and real estate are notoriously the most volatile.  Becuase of the risk/return tradeoff, riskier investments have higher potential returns. Investors have to be willing to accept a higher risk of losses, in order to get higher potential returns.
 
+```{r}
+pairs(all_returns)
+```
+SPY and TLT seem to be negatively correlated. SPY has a positive correlation with VNQ. VNQ also has a positive correlation with EEM. LQD has a positive correlation with TLT. Becuase of the negative correlation between SPY and TLT and because of their low variation, they will go in the safe portfolio. The negative correlation means that if one stock goes down, then the other is likely to go up. LQD also has low variation, so it will be the third allocation in the safe profile. EEM nad VNQ will so in the riskier portfolio because they have the most variation and are likely to move together, meaning if they go up, there is large potential profit. On the downside, there are large potential losses if they go down. 
+
+#Even Split
+```{r}
+#even split
+set.seed(11)
+return.today = resample(all_returns, 1, orig.ids=FALSE)
+initial_wealth = 100000
+sim1 = foreach(i=1:5000, .combine='rbind')%do% {
+  total_wealth = initial_wealth
+  my_weights = c(0.2,0.2,0.2,0.2,0.2)
+  holdings = total_wealth*my_weights
+  n_days = 20
+  wealthtracker = rep(0,n_days)
+  for(today in 1:n_days){
+    return.today = resample(all_returns,1,orig.ids=FALSE)
+    holdings = holdings+holdings*return.today
+    total_wealth=sum(holdings)
+    wealthtracker[today]=total_wealth
+  }
+  wealthtracker
+}
+plot(wealthtracker, type='l')
+head(sim1)
+hist(sim1[,n_days], 25)
+
+
+
+hist(sim1[,n_days]- initial_wealth, main = paste('Histogram even split' ,sep= ' ' ), xlab="Returns" ,breaks=30)
+abline(v=mean(sim1[,n_days]-1000),col='red',lwd=2)
+
+quantile(sim1[,n_days], 0.05) - initial_wealth
+mean(sim1[,n_days]) 
+total_wealth
+```
+Using the even split portfolio, the most that you will lose is $6,188.87 at a 95% confidence level. In this simulation, the total wealth at the end of the 20 days was $106,258.40 . 
+
+
+#Safer Portfolio 
+
+For the safer portfolio, we used only LQD, TLT, and SPY since they are the safest investment tolls.They have the least variation, meaning they have a lower chance of causes big losses. Bonds are less vulnerable to stock market fluctuation, allowing their prices to be more constant over-time. The trade-off is that there is a lower change of potential large earnings. From the boxplot we can see that LQD has the lowest variation, so it will be given the biggest weight, to be safer. SPY and TLT seem to be negatively correlated, so we will give them the same weighting of 0.25, in hopes that losses in one is balances from gains in the other. 
+
+```{r}
+#safer portfolio
+
+set.seed(11)
+
+initial_wealth = 100000
+sim_safe = foreach(i=1:5000, .combine='rbind')%do% {
+  total_wealth = initial_wealth
+  my_weights = c(0.25,0.25,0.5, 0.0, 0.0)
+  holdings = total_wealth*my_weights
+  n_days = 20
+  wealthtracker = rep(0,n_days)
+  for(today in 1:n_days){
+    return.today = resample(all_returns,1,orig.ids=FALSE)
+    holdings = holdings+holdings*return.today
+    total_wealth=sum(holdings)
+    wealthtracker[today]=total_wealth
+  }
+  wealthtracker
+}
+plot(wealthtracker, type='l')
+head(sim_safe)
+
+
+hist(sim_safe[,n_days]- initial_wealth, main = "Safe Portfolio Histogram",xlab="Returns", breaks=30)
+abline(v=mean(sim_safe[,n_days]- initial_wealth), col="red",lwd=2)
+
+mean(sim_safe[,n_days])
+quantile(sim1[,n_days], 0.05) - initial_wealth
+total_wealth
+```
+Using the safer portfolio, the most that you will lose is $6,188.87 at a 95% confidence level. In this simulation, the total wealth at the end of the 20 days was $99683.07 . 
+
+
+#Agressive Portfolio
+
+For the riskier portfolio, only EEM and VNQ were used becuase they were the two riskiest investments.Heavier weight (.6) was given to EEM becuase it is the riskier investment and has the highest varaition. The two instruments are postively correlated. 
+
+```{r}
+#riskier portfolio 
+set.seed(11)
+initial_wealth = 100000
+
+sim_risk = foreach(i=1:5000, .combine='rbind')%do% {
+  total_wealth = initial_wealth
+  my_weights = c(0.0,0.0,0.0,0.6,0.4)
+  holdings = total_wealth*my_weights
+  n_days = 20
+  wealthtracker = rep(0,n_days)
+  for(today in 1:n_days){
+    return.today = resample(all_returns,1,orig.ids=FALSE)
+    holdings = holdings+holdings*return.today
+    total_wealth=sum(holdings)
+    wealthtracker[today]=total_wealth
+  }
+  wealthtracker
+}
+plot(wealthtracker, type='l')
+head(sim_risk)
+
+
+hist(sim_risk[,n_days]- initial_wealth, main="Riskier Portfolio Histogram",xlab = "Returns", breaks=30)
+abline(v=mean(sim_risk[,n_days]-100000),col="red",lwd=2)
+
+mean(sim_risk[,n_days]) 
+quantile(sim_risk[,n_days], 0.05) - initial_wealth #how much you lost 
+total_wealth
+wealthtracker
+```
+
+Using the riskier portfolio, the most that you will lose is $12,746.39 at a 95% confidence level. In this simulation, the total wealth at the end of the 20 days was $107,455.50 . 
+
+#Comparing Portfolios 
+
+```{r}
+set.seed(11)
+names = c("even","safe","risky")
+average = c(mean(sim1[,20]),mean(sim_safe[,20]),mean(sim_risk[,20]))
+profit_prob = c(sum(sim1[,20]>100000)/5000,
+                sum(sim_safe[,20]>100000)/5000,
+                sum(sim_risk[,20]>100000)/5000)
+Var = c((quantile(sim1[,n_days], 0.05) - initial_wealth), 
+         (quantile(sim_safe[,n_days], 0.05) - initial_wealth),
+         (quantile(sim_risk[,n_days], 0.05) - initial_wealth)) 
+data.frame(names,Var)
+```
+From the output, you can see that the agressive portfolio is the riskiest, with the largest potential losses. 
