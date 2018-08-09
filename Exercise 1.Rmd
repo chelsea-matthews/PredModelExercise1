@@ -180,8 +180,9 @@ sim1 = foreach(i=1:5000, .combine='rbind')%do% {
   n_days = 20
   wealthtracker = rep(0,n_days)
   for(today in 1:n_days){
+    holdings = total_wealth*my_weights
     return.today = resample(all_returns,1,orig.ids=FALSE)
-    holdings = holdings+holdings*return.today
+    holdings = holdings+holdings*return.today #reallocating everyday
     total_wealth=sum(holdings)
     wealthtracker[today]=total_wealth
   }
@@ -200,7 +201,7 @@ quantile(sim1[,n_days], 0.05) - initial_wealth
 mean(sim1[,n_days]) 
 total_wealth
 ```
-Using the even split portfolio, the most that you will lose is $6,188.87 at a 95% confidence level. In this simulation, the total wealth at the end of the 20 days was $106,258.40 . 
+Using the even split portfolio, the most that you will lose is $6,240.31 at a 95% confidence level. In this simulation, the total wealth at the end of the 20 days was $106,120.20 . 
 
 
 #Safer Portfolio 
@@ -220,8 +221,9 @@ sim_safe = foreach(i=1:5000, .combine='rbind')%do% {
   n_days = 20
   wealthtracker = rep(0,n_days)
   for(today in 1:n_days){
+    holdings = total_wealth*my_weights
     return.today = resample(all_returns,1,orig.ids=FALSE)
-    holdings = holdings+holdings*return.today
+    holdings = holdings+holdings*return.today #reallocating everyday
     total_wealth=sum(holdings)
     wealthtracker[today]=total_wealth
   }
@@ -235,10 +237,10 @@ hist(sim_safe[,n_days]- initial_wealth, main = "Safe Portfolio Histogram",xlab="
 abline(v=mean(sim_safe[,n_days]- initial_wealth), col="red",lwd=2)
 
 mean(sim_safe[,n_days])
-quantile(sim1[,n_days], 0.05) - initial_wealth
+quantile(sim_safe[,n_days], 0.05) - initial_wealth
 total_wealth
 ```
-Using the safer portfolio, the most that you will lose is $6,188.87 at a 95% confidence level. In this simulation, the total wealth at the end of the 20 days was $99683.07 . 
+Using the safer portfolio, the most that you will lose is $2,849.68 at a 95% confidence level. In this simulation, the total wealth at the end of the 20 days was $99,634.77 . 
 
 
 #Agressive Portfolio
@@ -257,6 +259,7 @@ sim_risk = foreach(i=1:5000, .combine='rbind')%do% {
   n_days = 20
   wealthtracker = rep(0,n_days)
   for(today in 1:n_days){
+    holdings = total_wealth*my_weights #re-allocating everyday
     return.today = resample(all_returns,1,orig.ids=FALSE)
     holdings = holdings+holdings*return.today
     total_wealth=sum(holdings)
@@ -277,7 +280,7 @@ total_wealth
 wealthtracker
 ```
 
-Using the riskier portfolio, the most that you will lose is $12,746.39 at a 95% confidence level. In this simulation, the total wealth at the end of the 20 days was $107,455.50 . 
+Using the riskier portfolio, the most that you will lose is $12,779.98 at a 95% confidence level. In this simulation, the total wealth at the end of the 20 days was $107,473.40 . 
 
 #Comparing Portfolios 
 
